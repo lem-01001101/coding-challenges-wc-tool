@@ -145,6 +145,44 @@ if let input = readLine() {
         } else {
             print("command not found")
         }
+    } else if stack.count == 5 {
+        if stack[0] == "cat" {
+            let file = "/Users/leomagtibay/Documents/Leo Apps/wc tool/wc tool/\(stack[1])"
+            if stack[4] == "-c" {
+                
+                do {
+                    let attrs = try FileManager.default.attributesOfItem(atPath: file)
+                    if let fileSize = attrs[.size] as? NSNumber {
+                        print("\(fileSize.intValue)")
+                    }
+                } catch {
+                    print("Error reading file \(file): \(error)")
+                }
+                
+            } else if stack[4] == "-l" {
+                do {
+
+                    print("\(try lineCount(atPath: file)) ")
+    
+                    
+                } catch {
+                    print("Error counting lines: \(error)")
+                }
+            } else if stack[4] == "-w" {
+ 
+                let text = try String(contentsOfFile: file, encoding: .utf8)
+                let words = text.split {$0.isWhitespace || $0.isNewline}
+                
+                print("\(words.count) ")
+            } else if stack[4] == "-m" {
+                let text = try String(contentsOfFile: file, encoding: .utf8)
+                
+                print("\(text.unicodeScalars.count) ")
+                
+            }
+        } else {
+            print("command not found")
+        }
     } else {
         print("invalid entry")
     }
